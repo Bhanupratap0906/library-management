@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Book Management System
 
 A full-stack book management system with React components and JSX validation.
@@ -96,3 +97,6 @@ The validation system is built to work in both React and Node.js environments:
 
 - Tailwind CSS utility classes
 - Mobile-first approach with responsive breakpoints 
+=======
+# library-management
+>>>>>>> f3c7c9567ecc47f9df93e04d44219bed629f98b8
