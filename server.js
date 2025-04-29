@@ -1,3 +1,5 @@
+require('dotenv').config();  // Load environment variables from .env file
+
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
@@ -93,7 +95,7 @@ let books = [
 
 // Create the Express app
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 2002;  // Use environment variable for the port
 
 // Middleware
 app.use(cors());
@@ -108,11 +110,8 @@ app.post('/api/books', (req, res) => {
   const validation = validateBook(req.body);
   
   if (!validation.isValid) {
-    // Return JSX-style error response
     return res.status(400).json({
       success: false,
-      // In a real React SSR app, this would be an actual JSX component
-      // For this demo, we'll just structure it in a way that mimics the front-end error format
       errorComponent: {
         type: 'ErrorDisplay',
         props: {
@@ -223,14 +222,12 @@ app.post('/api/books/:id/borrow', (req, res) => {
     });
   }
   
-  // Update book copies
   const bookIndex = books.findIndex(b => b.id === bookId);
   books[bookIndex] = {
     ...book,
     copiesAvailable: book.copiesAvailable - 1
   };
   
-  // Add to user's books
   const userBook = {
     ...book,
     borrowedDate: new Date().toISOString()
@@ -256,7 +253,6 @@ app.post('/api/books/:id/return', (req, res) => {
     });
   }
   
-  // Get the book and update copies
   const bookIndex = books.findIndex(book => book.id === bookId);
   if (bookIndex !== -1) {
     books[bookIndex] = {
@@ -265,7 +261,6 @@ app.post('/api/books/:id/return', (req, res) => {
     };
   }
   
-  // Remove from user's books
   const returnedBook = userBooks[userBookIndex];
   userBooks = userBooks.filter(book => book.id !== bookId);
   
@@ -278,7 +273,6 @@ app.get('/api/user/books', (req, res) => {
 
 // Serve static assets in production
 if (process.env.NODE_ENV === 'production') {
-  // Set static folder
   app.use(express.static('client/build'));
   
   app.get('*', (req, res) => {
@@ -287,5 +281,5 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-}); 
+  console.log(`Server running on port http://localhost:${PORT}`);
+});
